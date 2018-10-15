@@ -30,7 +30,8 @@ void getHeartBeat(ngx_http_c_func_ctx_t* ctx) {
         200,
         NULL,
         ngx_http_c_func_content_type_plaintext,
-        "OK"
+        "OK",
+        sizeof("OK") - 1
     );
 
 }
@@ -42,7 +43,8 @@ void getDelay(ngx_http_c_func_ctx_t* ctx) {
         200,
         NULL,
         ngx_http_c_func_content_type_plaintext,
-        "OK"
+        "OK",
+        sizeof("OK") - 1
     );
 }
 
@@ -107,7 +109,8 @@ void getRoute(ngx_http_c_func_ctx_t* ctx) {
                         200,
                         NULL,
                         ngx_http_c_func_content_type_json,
-                        "{'status':0}"
+                        "{'status':0}",
+                        sizeof("{'status':0}") - 1
                     );
                 }
 
@@ -131,7 +134,8 @@ void getRoute(ngx_http_c_func_ctx_t* ctx) {
                             200,
                             NULL,
                             ngx_http_c_func_content_type_json,
-                            output.c_str()
+                            output.c_str(),
+                            output.length()
                         );
                     }
                 }
@@ -143,7 +147,8 @@ void getRoute(ngx_http_c_func_ctx_t* ctx) {
                 200,
                 NULL,
                 ngx_http_c_func_content_type_json,
-                "{'status':0}"
+                "{'status':0}",
+                sizeof("{'status':0}") - 1
             );
         }
 
@@ -153,7 +158,8 @@ void getRoute(ngx_http_c_func_ctx_t* ctx) {
             200,
             NULL,
             ngx_http_c_func_content_type_json,
-            "{'status':0}"
+            "{'status':0}",
+            sizeof("{'status':0}") - 1
         );
     }
 }

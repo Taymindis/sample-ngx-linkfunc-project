@@ -72,7 +72,7 @@ file(COPY ${data} DESTINATION ${PROJECT_BINARY_DIR})
 # that we need to link to
 # find_package(Boost 1.36.0 COMPONENTS filesystem system REQUIRED)
 SET(LIBPATH /usr/lib /usr/local/lib)
-include_directories(src/main /usr/local/include /usr/include)
+include_directories(src/main src/includejsoncpp /usr/local/include /usr/include)
 
 find_library(CURL_LIB NAMES curl PATHS ${LIBPATH})
 if(CURL_LIB)
