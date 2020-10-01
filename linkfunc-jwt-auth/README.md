@@ -1,11 +1,9 @@
-# sample-ngx-cfunc-project
-This is the sample application projects of using nginx c function
+This is the sample application projects of using nginx link function
 
 
 ## Dependency
 
-Curl Lib - https://curl.haxx.se/
-Backcurl Lib - https://github.com/Taymindis/backcurl
+JWT Lib - https://github.com/GlitchedPolygons/l8w8jwt
 JSONCPP - Which already included source files in the project.
 
 
