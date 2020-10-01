@@ -1,0 +1,7 @@
+{
+	"secret_key": "@DASLSKDLS@!__",
+	"iat": 60,
+	"iss": "jwt_iss",
+	"sub": "jwt_sub",
+	"aud": "jwt_aud"
+}

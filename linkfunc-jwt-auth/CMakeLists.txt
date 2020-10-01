@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
-project(cfun_ggldirectionProject)
+set(CMAKE_C_COMPILER "gcc")
+set(CMAKE_CXX_COMPILER "g++")
+project(linkfun_jwt_proj)
 
 ###############################################################################
 ## file globbing ##############################################################
@@ -8,8 +10,8 @@ project(cfun_ggldirectionProject)
 # these instructions search the directory tree when cmake is
 # invoked and put all files that match the pattern in the variables 
 # `sources` and `data`
-file(GLOB_RECURSE sources src/main/*.c src/main/*.cpp src/main/*.h src/main/*.hpp src/libjsoncpp/*.cpp src/libjsoncpp/*.inl src/libjsoncpp/*.in)
-file(GLOB_RECURSE sources_test src/test/*.cpp src/libjsoncpp/*.cpp src/libjsoncpp/*.inl src/libjsoncpp/*.in)
+file(GLOB_RECURSE sources src/main/*.c src/main/*.cpp src/main/*.h src/main/*.hpp libjsoncpp/*.cpp libjsoncpp/*.inl libjsoncpp/*.in)
+file(GLOB_RECURSE sources_test src/test/*.cpp)
 file(GLOB_RECURSE data resources/*)
 # you can use set(sources src/main.cpp) etc if you don't want to
 # use globing to find files automatically
@@ -22,8 +24,8 @@ link_directories(/usr/local/lib /usr/lib)
 ###############################################################################
 
 # add the data to the target, so it becomes visible in some IDE
-add_library(cfun_ggldirection SHARED ${sources} ${data})
-set_property(TARGET cfun_ggldirection PROPERTY POSITION_INDEPENDENT_CODE ON)
+add_library(linkfun_jwt SHARED ${sources} ${data})
+set_property(TARGET linkfun_jwt PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 if(NOT ${CMAKE_VERSION} LESS 3.2)
     set(CMAKE_CXX_STANDARD 11)
@@ -54,11 +56,16 @@ else()
 endif()
 
 
-# just for cfun_ggldirection add some compiler flags
-target_compile_options(cfun_ggldirection PUBLIC -rdynamic -std=c++11)
+# just for linkfun_jwt add some compiler flags
+if(UNIX AND NOT APPLE)
+target_compile_options(linkfun_jwt PUBLIC -rdynamic -std=c++11)
+endif()
+if(APPLE)
+target_compile_options(linkfun_jwt PUBLIC -rdynamic -std=c++11)
+endif()
 
 # this lets me include files relative to the root src dir with a <> pair
-target_include_directories(cfun_ggldirection PUBLIC src/main)
+target_include_directories(linkfun_jwt PUBLIC src/main)
 
 # this copies all resource files in the build directory
 # we need this, because we want to work with paths relative to the executable
@@ -72,41 +79,27 @@ file(COPY ${data} DESTINATION ${PROJECT_BINARY_DIR})
 # that we need to link to
 # find_package(Boost 1.36.0 COMPONENTS filesystem system REQUIRED)
 SET(LIBPATH /usr/lib /usr/local/lib)
-include_directories(src/main src/includejsoncpp /usr/local/include /usr/include)
+include_directories(src/main includejsoncpp chillbuff ngx_linkfun_header /usr/local/include /usr/include)
 
-find_library(CURL_LIB NAMES curl PATHS ${LIBPATH})
-if(CURL_LIB)
-  message(STATUS "curl found at ${CURL_LIB}. curl support is compiled in.")
-else(CURL_LIB)
-  message( FATAL_ERROR "curl not found. Please install curl")
-endif(CURL_LIB)
 
-find_library(BACKCURL_LIB NAMES backcurl PATHS ${LIBPATH})
-if(BACKCURL_LIB)
-  message(STATUS "backcurl found at ${BACKCURL_LIB}. backcurl support is compiled in.")
-else(BACKCURL_LIB)
-  message( FATAL_ERROR "backcurl not found. Please install backcurl")
-endif(BACKCURL_LIB)
+find_library(JWT_LIB NAMES l8w8jwt PATHS ${LIBPATH})
+if(JWT_LIB)
+  message(STATUS "l8w8jwt found at ${JWT_LIB}. l8w8jwt support is compiled in.")
+else(JWT_LIB)
+  message( FATAL_ERROR "l8w8jwt not found. Please install l8w8jwt")
+endif(JWT_LIB)
+
+
 
 find_library(THREAD_LIB NAMES pthread PATHS ${LIBPATH})
 if(THREAD_LIB)  
+  message(STATUS "threading Available.")
 else(THREAD_LIB)
   message( FATAL_ERROR "pthread not found. Please install pthread")
 endif(THREAD_LIB)
 
 
-
-###############################################################################
-## FIND PROGRAM, sometimes you might need openssl for password encryption######
-###############################################################################
-find_program(OPENSSL "openssl")
-IF(OPENSSL)
-  message(STATUS "OPENSSL Available.")
-else(OPENSSL)
-  message( FATAL_ERROR "openssl is needed for this project password encryption. Please install openssl")
-endif(OPENSSL)
-
-target_link_libraries(cfun_ggldirection PUBLIC pthread curl backcurl)
+target_link_libraries(linkfun_jwt PUBLIC pthread l8w8jwt)
 
 
 ###############################################################################
@@ -130,11 +123,11 @@ if(GTEST_FOUND)
 
   # this allows us to use our executable as a link library
   # therefore we can inherit all compiler options and library dependencies
-  set_target_properties(cfun_ggldirection PROPERTIES ENABLE_EXPORTS on)
+  set_target_properties(linkfun_jwt PROPERTIES ENABLE_EXPORTS on)
 
   target_link_libraries(unit_tests PUBLIC
     ${GTEST_BOTH_LIBRARIES} curl backcurl pthread
-    # cfun_ggldirection
+    # linkfun_jwt
   )
 
   target_include_directories(unit_tests PUBLIC
@@ -151,7 +144,7 @@ endif()
 
 # all install commands get the same destination. this allows us to use paths
 # relative to the executable.
-install(TARGETS cfun_ggldirection DESTINATION installed_destination)
+install(TARGETS linkfun_jwt DESTINATION installed_destination)
 # this is basically a repeat of the file copy instruction that copies the
 # resources in the build directory, but here we tell cmake that we want it
 # in the package
@@ -161,7 +154,7 @@ install(DIRECTORY resources DESTINATION installed_destination)
 # there are a lot more variables you can set, and some
 # you need to set for some package types, but we want to
 # be minimal here
-set(CPACK_PACKAGE_NAME "cfun_ggldirection")
+set(CPACK_PACKAGE_NAME "linkfun_jwt")
 set(CPACK_PACKAGE_VERSION "1.0.0")
 
 # we don't want to split our program up into several things
